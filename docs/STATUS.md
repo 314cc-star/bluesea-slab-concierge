@@ -88,14 +88,20 @@ release. GitHub detects the MIT license.
 - Demo mode (on Render) releases reservations after 30 minutes.
 
 ## Left to do (in order)
-1. **Demo video** (biggest task). Full kit in `docs/VIDEO.md`: shot list, 11-part English narration for
+1. ~~Demo video~~ **Draft uploaded: https://youtu.be/EsnNLFuDd98** (channel "Slab Concierge", 2:04). Story: many
+   customers chat about the same slab; whoever pays the PayPal deposit first holds it for 3 days. Uses the owner's
+   4 yard clips, simulated WhatsApp chats (labelled), original synthesized background music, no narration.
+   **Caveat:** the site parts were recorded on a local server with scripted Gemini replies and a stand-in PayPal
+   button (the live site was unreachable from that session). Replace them with real recordings of the live site
+   (concierge answer, PayPal sandbox payment, Reserved badge, `/owner`) if time allows, then replace the video in
+   YouTube Studio. Original plan for reference: Full kit in `docs/VIDEO.md`: shot list, 11-part English narration for
    text-to-speech, captions, editing steps, upload checklist. Plan agreed with the owner: the agent does the editing
    on this iMac with **Playwright** (automated screen recording of the live site), **HyperFrames** (title cards
    and captions in the brand style), **edge-tts** (narration) and **FFmpeg** (assembly, music, 1080p export).
    The owner films the yard shots (A1–A4) and, if needed, a 15-second PayPal payment clip; the agent cannot log
    into PayPal as the buyer. Ask before installing tools.
 2. Keep-awake for the free Render service so judges don't wait (an external ping every ~10 min).
-3. README: add the live URL, the video link and screenshots.
+3. README: live URL and video link done; screenshots still to add.
 4. Owner decides on Gemini billing.
 5. **Make the repo public** (`gh repo edit 314cc-star/bluesea-slab-concierge --visibility public --accept-visibility-change-consequences`), only when the owner says so.
 6. Owner fills in the Devpost form using `docs/SUBMISSION.md`, adds the sandbox buyer login and the owner key in
