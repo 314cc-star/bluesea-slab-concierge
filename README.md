@@ -31,7 +31,7 @@ Built for wood slabs, the pattern fits any maker of one-of-a-kind goods: custom 
 
 | Live demo | Demo video |
 |---|---|
-| _add Render URL_ | _add YouTube URL_ |
+| [bluesea-slab-concierge.onrender.com](https://bluesea-slab-concierge.onrender.com) | [youtu.be/EsnNLFuDd98](https://youtu.be/EsnNLFuDd98) |
 
 ---
 

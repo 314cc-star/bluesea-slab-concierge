@@ -11,12 +11,14 @@ We make solid wood slab tables in Phrae, Thailand, and have 7,000+ customer revi
 once, and every table is finished to order with the customer's legs and finish.
 
 Online shops are built for the opposite: identical products, a catalogue photo, pay in full, sell as many as you like.
-None of that works for us. So every sale moves into a chat: we send photos of real slabs one by one, work out a price
-by hand, wait for a bank slip, and take care never to promise the same slab to two people. It is slow, it stops when
-we sleep, and it is hard for foreign customers.
+None of that works for us. So every sale moves into a chat, and I chat with many customers at the same time. Often
+several of them want the same slab: one asks if it is still available, one asks me to hold it until tomorrow, one sends
+a transfer slip. Who gets it? Did I already promise it to someone? It is slow, it causes arguments, and it stops when
+we sleep.
 
-We wanted a shop that understands one-of-a-kind, made-to-order goods: one that finds the real piece, lets the customer
-make it theirs, and reserves it safely with a deposit.
+We wanted one simple, fair rule: **whoever pays the deposit first gets the slab.** A 50% PayPal deposit reserves that
+one slab for that one customer for 3 days, the website marks it Reserved so nobody else can pay for it, and if they
+change their mind within 3 days the deposit is refunded and the slab goes back on sale.
 
 ## What it does
 - **Finds the real piece.** Customers describe their room. A Gemini agent calls `search_slabs` on live stock (real slabs, real photos, real measurements) and explains which slab fits and why. It never invents stock or prices.
@@ -63,17 +65,22 @@ Unique, made-to-order goods need a different checkout, one built around reservin
 ## What's next
 Moving from JSON files to a database, a LINE integration for order updates, PayPal webhooks to mark balances paid automatically, and opening the same flow to other makers of one-of-a-kind goods.
 
+## Links
+- Live demo: https://bluesea-slab-concierge.onrender.com
+- Demo video: https://youtu.be/EsnNLFuDd98
+- Code: https://github.com/314cc-star/bluesea-slab-concierge
+
 ## Built with
 react, vite, node.js, express, paypal-javascript-sdk, paypal-orders-api, paypal-invoicing-api, paypal-payments-api, google-gemini, model-context-protocol, ag-grid, render
 
 ## Testing instructions (paste into the form)
-Live demo: <Render URL>. Owner desk: <Render URL>/owner, owner key: <ADMIN_KEY>.
+Live demo: https://bluesea-slab-concierge.onrender.com. Owner desk: https://bluesea-slab-concierge.onrender.com/owner, owner key: <ADMIN_KEY>.
 PayPal sandbox buyer: <sandbox personal email> / <sandbox password> (sandbox only, no real money).
 1. Ask the concierge: "A dining table for 6 people, my room is 3 m wide", then "I'll take BSW-177 with steel legs".
 2. Click "Review and pay deposit", enter any phone number, click the yellow PayPal button and log in with the sandbox buyer above.
 3. The confirmation shows the order number, the delivery address from PayPal and the timeline.
 4. Open /owner to see the order. Click "Send balance invoice" (PayPal Invoicing), or "Refund" (PayPal Refunds) to put the slab back on sale.
-5. Optional: add the MCP server `<Render URL>/mcp` to an AI assistant and ask it to find and reserve a slab.
+5. Optional: add the MCP server `https://bluesea-slab-concierge.onrender.com/mcp` to an AI assistant and ask it to find and reserve a slab.
 Note: this demo releases test reservations after 30 minutes. The free Render plan may need about a minute to wake up.
 
 ---
