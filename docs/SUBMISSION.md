@@ -4,53 +4,77 @@
 Blue Sea Wood Slab Concierge
 
 ## Tagline (one line)
-An AI shop assistant that finds the right one-of-a-kind wood slab for your room and reserves it with a PayPal deposit.
+Sell one-of-a-kind, made-to-order goods online: AI finds the real piece, PayPal reserves it.
 
 ## Inspiration
-We make solid wood slab tables in Phrae, Thailand. Every slab is unique, so every sale today is a long LINE chat:
-the customer sends a size, we walk the yard, send photos one by one, quote a price and ask for a 50% deposit by bank
-transfer. We have 7,000+ customer reviews, but this back-and-forth only happens in working hours, and it
-is hard for foreign customers living in Thailand. We wanted a shop that does that conversation for us, 24/7,
-and takes the deposit safely.
+We make solid wood slab tables in Phrae, Thailand, and have 7,000+ customer reviews. Every slab we sell exists only
+once, and every table is finished to order with the customer's legs and finish.
+
+Online shops are built for the opposite: identical products, a catalogue photo, pay in full, sell as many as you like.
+None of that works for us. So every sale moves into a chat: we send photos of real slabs one by one, work out a price
+by hand, wait for a bank slip, and take care never to promise the same slab to two people. It is slow, it stops when
+we sleep, and it is hard for foreign customers.
+
+We wanted a shop that understands one-of-a-kind, made-to-order goods: one that finds the real piece, lets the customer
+make it theirs, and reserves it safely with a deposit.
 
 ## What it does
-- **Slab Concierge (agentic commerce):** customers describe their room. A Gemini agent calls `search_slabs` on live stock, explains which slabs fit and why, and calls `start_checkout` to put a PayPal deposit button in the chat. The customer always approves the payment.
-- **PayPal deposit:** 50% is paid through the PayPal JavaScript SDK (wallet or card). The server creates and captures the Orders v2 payment, reserves the slab, and saves the order.
-- **Owner desk (AG Grid):** an orders grid with a one-click **PayPal invoice for the balance**, and an editable stock grid that updates the shop and the agent instantly.
-- **Any AI assistant can shop here (MCP):** our store is an MCP server. Claude, ChatGPT or any agent can search slabs and create a PayPal deposit link that their human approves. It is agentic commerce with a person in control of the money.
-- **See it in your room:** upload a room photo and Gemini image editing shows the real slab as a table in that room.
-- **Photo to listing:** the owner snaps a slab on their phone. Gemini vision writes the title, description and Instagram hashtags, and the slab goes live with its real photo.
+- **Finds the real piece.** Customers describe their room. A Gemini agent calls `search_slabs` on live stock (real slabs, real photos, real measurements) and explains which slab fits and why. It never invents stock or prices.
+- **Made to order.** Customers choose steel, wooden or no legs and one of five finishes, and see the total at once. The agent can suggest options, for example a durable polyurethane finish for a family with kids.
+- **Reserves one unique item.** A 50% PayPal deposit locks that one slab to that one customer as soon as it is captured. No double-selling.
+- **The full made-to-order lifecycle on PayPal:**
+  - deposit to reserve (Orders v2)
+  - delivery address taken from the PayPal checkout
+  - a 3-day change-of-mind window with a one-click full refund (Refunds)
+  - a balance invoice before shipping (Invoicing v2)
+- **Owner desk on AG Grid.** Orders with phone, delivery address, refund and invoice actions; editable stock that updates the shop and the agent instantly; and a photo-to-listing writer (Gemini vision).
+- **Ready for AI shoppers.** The store is an MCP server. Claude, ChatGPT or any agent can find a slab and create a PayPal deposit link, and the human approves the payment on PayPal.
+- **Findable by AI search.** Live schema.org product data and an `llms.txt` describe the stock to search engines and AI assistants.
 
 ## How we built it
 React + Vite front end, Node/Express API, deployed on Render.
-- **PayPal:** JavaScript SDK (`@paypal/react-paypal-js`), Orders v2 create/capture, Invoicing v2 create/send, all in the sandbox. The deposit amount is computed on the server from stored stock, never trusted from the browser.
-- **AI:** Google Gemini API, using function calling for the agent and vision with a JSON response schema for listings. Gemini Flash-Lite keeps replies to about 5 seconds, with automatic fallback across Gemini models.
-- **AG Grid Community** for the owner dashboard.
+- **PayPal:**
+  - JavaScript SDK (`@paypal/react-paypal-js`) for wallet and card checkout
+  - Orders v2 create and capture, with legs, finish and contact details carried in `custom_id`
+  - an Orders v2 redirect flow (`payer-action` link) for checkouts created by AI agents
+  - Invoicing v2 create and send
+  - Payments v2 capture refunds
+
+  Every amount is computed on the server from stored prices; the browser never sends a price.
+- **AI (Google Gemini):**
+  - function calling for the shop agent (`search_slabs`, `start_checkout`)
+  - vision with a JSON response schema for listings
+  - automatic fallback across Gemini models when one is busy
+- **MCP:** a stateless Streamable HTTP server (`@modelcontextprotocol/sdk`) with four tools: `search_slabs`, `get_slab`, `create_deposit_checkout` and `check_checkout`.
+- **AG Grid Community** for the owner desk; **Render** for hosting.
 
 ## Challenges we ran into
-- Keeping the agent honest: it must search real stock before recommending anything, and can only check out slabs that are still available.
-- Free-tier AI limits and overloads: we added model fallback with cooldowns based on Google's retry hints.
-- Language: many of our customers are foreigners, so the agent pins its reply language to the customer's latest message.
+- **Uniqueness.** Every slab is stock of one, so a reservation has to be atomic. A capture can arrive twice (page reloads, an agent checking the order), so the capture step is safe to repeat.
+- **Keeping the agent honest.** It must search real stock before recommending anything, and can only check out slabs that are still available.
+- **Pricing made-to-order goods.** The price depends on the slab, legs and finish. It is quoted live in the browser but always recomputed on the server before PayPal sees it.
+- **Free-tier AI limits.** We added model fallback with cooldowns based on Google's retry hints.
 
 ## Accomplishments we're proud of
-A real small business flow, end to end: chat, recommendation, PayPal deposit, reservation, balance invoice, and new stock from a phone photo.
+A real small business on real stock, end to end: chat, a recommendation, customisation, a PayPal deposit, a reservation, a refund or a balance invoice, and new stock from a phone photo.
 
 ## What we learned
-Agentic commerce works best when the agent can find and propose, but payment stays a clear human approval.
+Unique, made-to-order goods need a different checkout, one built around reserving rather than buying. And agentic commerce works best when the agent finds and proposes, while the payment stays a clear human approval.
 
 ## What's next
-Real stock and photos for every slab, a LINE integration, shipping quotes for slabs over 2 m, and table legs as add-ons in the same checkout.
+Moving from JSON files to a database, a LINE integration for order updates, PayPal webhooks to mark balances paid automatically, and opening the same flow to other makers of one-of-a-kind goods.
 
 ## Built with
-react, vite, node.js, express, paypal-javascript-sdk, paypal-orders-api, paypal-invoicing-api, google-gemini, ag-grid, render
+react, vite, node.js, express, paypal-javascript-sdk, paypal-orders-api, paypal-invoicing-api, paypal-payments-api, google-gemini, model-context-protocol, ag-grid, render
 
 ## Testing instructions (paste into the form)
 Live demo: <Render URL>. Owner desk: <Render URL>/owner, owner key: <ADMIN_KEY>.
-1. Ask the concierge: "A dining table for 6 people, my room is 3 m wide", then "I'll take BSW-2403".
-2. Click "Pay deposit with PayPal" and pay with any PayPal sandbox personal account. No real money is used.
-3. Open /owner to see the order, then click "Send balance invoice".
-4. In "Add a slab with AI", upload a wood slab photo, enter a size and price, and click "Write listing with AI".
-Note: the free Render plan sleeps when idle, so the first load can take about a minute.
+PayPal sandbox buyer: <sandbox personal email> / <sandbox password> (sandbox only, no real money).
+1. Ask the concierge: "A dining table for 6 people, my room is 3 m wide", then "I'll take BSW-177 with steel legs".
+2. Click "Review and pay deposit", enter any phone number, click the yellow PayPal button and log in with the sandbox buyer above.
+3. The confirmation shows the order number, the delivery address from PayPal and the timeline.
+4. Open /owner to see the order. Click "Send balance invoice" (PayPal Invoicing), or "Refund" (PayPal Refunds) to put the slab back on sale.
+5. Optional: add the MCP server `<Render URL>/mcp` to an AI assistant and ask it to find and reserve a slab.
+Note: this demo releases test reservations after 30 minutes. The free Render plan may need about a minute to wake up.
 
 ---
 
@@ -60,11 +84,11 @@ Record the screen at 1080p. Add the narration as a voice-over in English, or spe
 
 | Time | On screen | Narration (English) |
 |---|---|---|
-| 0:00-0:15 | Real workshop or slab yard footage (phone video), then the shop home page | "I'm the owner of Blue Sea Wood. We make solid wood slab tables in Phrae, Thailand. Every slab is one of a kind, and that makes selling them slow." |
-| 0:15-0:30 | A LINE chat on the phone: size, photos, price, bank slip | "Today every order is a long chat: customers send a size, we send photos one by one, quote, and ask for a deposit by bank transfer." |
-| 0:30-1:15 | Concierge: type "A dining table for 6 people, my room is 3 m wide". Show the answer and the slab chips, then ask for steel legs and a durable finish. | "So we built Slab Concierge. The customer describes their room. A Gemini agent searches our real stock, not a script, explains which slab fits and why, and suggests legs and a finish." |
-| 1:15-1:50 | "I'll take BSW-2403" opens the PayPal button in chat. Pay with the sandbox account. The success message appears and the slab card shows Reserved. | "When they choose, the agent opens a PayPal checkout for the 50% deposit. The customer approves it, never the AI. The slab is reserved instantly." |
-| 1:50-2:15 | /owner: the order appears in the AG Grid. Click "Send balance invoice" and show the toast. Edit a price in the stock grid. | "On the owner desk, built with AG Grid, I see the order. When the table is finished, one click sends the balance as a PayPal invoice." |
-| (optional, replace part of 1:15-1:50) | Claude Code or Claude Desktop with the shop added as an MCP server: "Find me a 2 m Suar dining slab from Blue Sea Wood and reserve it". The assistant returns a PayPal link; open it and approve. | "And customers don't even need our website. Any AI assistant can shop Blue Sea Wood through our MCP server, but the human always approves the payment on PayPal." |
-| 2:15-2:40 | Add a slab with AI: take a phone photo, fill the size, click "Write listing". Show the listing copy, then "Add to shop stock". | "New slab in the yard? I take one photo. Gemini writes the listing for our site, marketplaces and Instagram, and it's live." |
-| 2:40-2:50 | Logo + URL | "Blue Sea Wood Slab Concierge: one-of-a-kind wood, sold the way it deserves. Built with PayPal and Gemini." |
+| 0:00-0:12 | Slab yard footage: the forklift lifting one big slab with chalk numbers | "Every slab I sell exists only once. This one, number 177, is the only one in the world." |
+| 0:12-0:30 | Phone: a long LINE chat with photos, a price typed by hand, a bank slip | "Online shops are built for products you can make a thousand of. So every sale moves into a chat: photos one by one, a price by hand, a bank slip, and the fear of selling the same slab twice." |
+| 0:30-1:00 | Website: ask "A dining table for 6 people, my room is 3 m wide". Show the answer, the slab chips, and open the photo viewer. | "So we built a shop for one-of-a-kind goods. Our Gemini agent searches the real slabs in our yard, not a catalogue, and explains which one fits your room." |
+| 1:00-1:25 | Ask for steel legs and a durable finish; the checkout opens with them chosen. Switch the finish and watch the total update. | "Every table is made to order. Choose the legs and the finish, and the price updates instantly." |
+| 1:25-1:55 | Enter a phone number, pay the deposit with the PayPal sandbox account; the confirmation shows the order, address and timeline; the slab card shows Reserved. | "A 50% PayPal deposit reserves this exact slab for you, and nobody else can buy it. PayPal gives us your delivery address, and you have three days to change your mind." |
+| 1:55-2:20 | /owner: the order in AG Grid with phone and address. Click Refund on one order (the slab returns to stock), then Send balance invoice on another. | "On my owner desk I see every order. A refund is one click through PayPal, and the slab goes straight back on sale. When a table is finished, one click sends the balance as a PayPal invoice." |
+| 2:20-2:38 | An AI assistant connected to our MCP server finds a slab and returns a PayPal link; open it and approve. | "And we're ready for AI shoppers: any assistant can find a slab and hand you a PayPal link, but you always approve the payment." |
+| 2:38-2:50 | Logo, URL | "Blue Sea Wood: one-of-a-kind goods, reserved with PayPal. Built for our wood, ready for every maker of things that exist only once." |

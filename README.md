@@ -1,23 +1,33 @@
 # Blue Sea Wood · Slab Concierge
 
-**An AI shop assistant that sells one-of-a-kind wood slabs, and takes the deposit with PayPal.**
+**Sell one-of-a-kind, made-to-order goods online: AI finds the real piece, PayPal reserves it.**
 
-Blue Sea Wood is a family wood-slab maker in Phrae, Thailand, with 7,000+ customer reviews.
-Every slab they sell is a single, unique piece of Suar (Monkey Pod) wood, so every sale today starts the same way:
-a customer messages on LINE with a size, the owner searches the yard, sends photos one by one, quotes a price,
-and asks for a 50% deposit by bank transfer. It works, but it is slow, it only happens during working hours, and
-it is hard for foreign customers.
+> Online shops are built for products you can make a thousand of. We sell things that exist only once, and are finished to order.
 
-Slab Concierge turns that conversation into a self-serve flow:
+Blue Sea Wood is a family wood-slab maker in Phrae, Thailand, with 7,000+ customer reviews. Every slab is a single,
+unique piece of Suar (Monkey Pod) wood, and every table is finished to order. Ordinary e-commerce assumes the opposite:
 
-1. **The customer describes their room** ("a dining table for 6, my room is 3 m wide").
-2. **An AI agent searches the real stock**, explains which slabs fit and why, and never invents stock or prices.
-3. **When the customer picks one, the agent opens a PayPal checkout** for the 50% deposit. The customer approves the payment; the agent never pays on its own.
-4. **The slab is reserved instantly**, and the owner sees the order on the Owner desk.
-5. **When the table is finished, the owner sends the balance as a PayPal invoice** with one click.
-6. **New stock goes online from a phone photo**: the AI writes the listing, ready for the website, online marketplaces and Instagram.
-7. **Other people's AI assistants can shop here too.** The store is an **MCP server** (`/mcp`). Claude, ChatGPT or any MCP client can search the slabs and create a PayPal deposit link. The assistant hands the link to its user, who approves the payment on PayPal.
-8. **See it in your room**: the customer uploads a room photo, and Gemini image editing shows the actual slab as a finished table in that room, at real size.
+| A normal online shop | Blue Sea Wood |
+|---|---|
+| One product, 100 identical units in stock | Every slab is unique: stock of exactly one |
+| A catalogue photo is enough | Customers need to see *the* slab they will get |
+| Pay in full at checkout | Deposit to reserve → made to order → balance before shipping |
+| Fixed price | Price depends on legs and finish |
+| Selling twice is fine | Selling the same slab twice is a disaster |
+
+So today every sale moves into a LINE chat. The owner sends photos one by one, quotes by hand, waits for a bank slip, and has to make sure the same slab is never promised to two people.
+
+Slab Concierge turns that chat into a self-serve shop built for unique, customised goods:
+
+1. **Find the real piece.** The customer describes their room ("a dining table for 6, my room is 3 m wide"). A Gemini agent searches the **actual slabs in the yard**, never invents stock, and explains why each one fits.
+2. **Make it theirs.** The customer chooses legs (steel, wood or none) and one of five finishes, and sees the full price at once.
+3. **Reserve it with PayPal.** A 50% deposit **locks that one slab to that one customer** the moment it is captured. The agent can open the checkout, but only the customer approves the payment.
+4. **Change of mind? 3 days, full refund.** The owner refunds through PayPal with one click, and the slab goes straight back on sale.
+5. **Made to order, then the balance.** After production, one click sends the balance as a PayPal invoice. Delivery is free.
+6. **New stock from a photo.** The owner photographs a slab, and the AI writes the listing.
+7. **Ready for AI shoppers.** The store is also an **MCP server** (`/mcp`), so any AI assistant can find a slab and hand its user a PayPal approval link.
+
+Built for wood slabs, the pattern fits any maker of one-of-a-kind goods: custom furniture, ceramics, art, vintage, handmade jewellery.
 
 | Live demo | Demo video |
 |---|---|
