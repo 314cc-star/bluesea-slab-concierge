@@ -98,10 +98,15 @@ ${policyGuide()}`,
         slab_id: z.string(),
         legs: z.enum(Object.keys(LEGS)).optional().describe('none (tabletop only), steel or wood'),
         finish: z.enum(Object.keys(FINISHES)).optional().describe('finish id; all finishes are included in the price'),
+        customer_phone: z
+          .string()
+          .max(60)
+          .optional()
+          .describe("Your user's phone number or LINE ID, so the shop can arrange delivery. Ask your user first; the delivery address is chosen in PayPal."),
       },
       annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true },
     },
-    async ({ slab_id, legs, finish }) => {
+    async ({ slab_id, legs, finish, customer_phone }) => {
       if (!paypalReady()) return fail('Checkout is not available right now.');
       const slab = await getSlab(slab_id);
       if (!slab) return fail(`No slab with ID ${slab_id}.`);
@@ -113,7 +118,7 @@ ${policyGuide()}`,
         currency,
         returnUrl: `${base}/checkout/return`,
         cancelUrl: `${base}/checkout/cancel`,
-        customId: encodeChoice(slab.id, q),
+        customId: encodeChoice(slab.id, { ...q, contact: customer_phone }),
         summary: q.summary,
       });
       const link = order.links?.find((l) => l.rel === 'payer-action' || l.rel === 'approve')?.href;

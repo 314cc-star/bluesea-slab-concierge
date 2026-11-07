@@ -283,3 +283,20 @@ a { color: var(--slate); }
   .msg { max-width: 92%; }
   .concierge { padding: 16px; }
 }
+
+.contact-field { display: flex; flex-direction: column; gap: 4px; font-weight: 700; color: var(--ink); margin: 0 0 14px; }
+.contact-field small { font-weight: 400; color: var(--muted); }
+.contact-field input { border: 1px solid #cfcfcf; border-radius: 8px; padding: 10px 12px; font: inherit; font-weight: 400; }
+.contact-field input[aria-invalid='true'] { border-color: #a12d2d; }
+.ship-to { background: var(--soft); border-radius: 10px; padding: 10px 12px; font-size: 0.9rem; }
+
+.opt img { width: 100%; aspect-ratio: 1; object-fit: contain; background: #fff; border-radius: 6px; margin-bottom: 4px; }
+.opt-none { display: grid; place-items: center; aspect-ratio: 1; background: var(--soft); border-radius: 6px; margin-bottom: 4px; color: var(--muted); font-size: 0.8rem; }
+.reviews { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.reviews li { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: flex; flex-direction: column; gap: 8px; }
+.reviews .stars { color: #e0a526; letter-spacing: 2px; }
+.reviews blockquote { margin: 0; color: var(--ink); }
+.reviews cite { font-style: normal; color: var(--muted); font-size: 0.88rem; }
+@media (max-width: 480px) {
+  .opt-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}

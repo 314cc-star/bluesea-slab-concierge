@@ -37,6 +37,18 @@ export default function OrderConfirmation({ order, slab, money, contact, cancelD
         <dd>{money(order.balance)}</dd>
       </dl>
 
+      {(order.shipTo || order.contact) && (
+        <p className="ship-to">
+          <strong>Delivering to:</strong> {order.shipTo ? `${order.shipTo.name}, ${order.shipTo.address}` : 'the address you gave in PayPal'}
+          {order.contact && (
+            <>
+              <br />
+              <strong>We will contact you on:</strong> {order.contact}
+            </>
+          )}
+        </p>
+      )}
+
       <h3 className="timeline-title">What happens next</h3>
       <ol className="timeline">
         {steps.map(([when, what]) => (

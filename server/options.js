@@ -3,8 +3,16 @@
 
 export const LEGS = {
   none: { label: 'No legs (tabletop only)' },
-  steel: { label: 'Steel legs (1 pair)' },
-  wood: { label: 'Wooden legs (1 pair)' },
+  steel: {
+    label: 'Steel legs (1 pair)',
+    image: '/brand/legs/steel.png',
+    note: 'Square frame shown; X, Double Z, braided and 3-rod styles too. We confirm your style before production.',
+  },
+  wood: {
+    label: 'Wooden legs (1 pair)',
+    image: '/brand/legs/wood.png',
+    note: 'Solid slab legs shown; A-shape, 3-pillar and rectangular styles too. We confirm your style before production.',
+  },
 };
 
 // Steel and wooden legs cost the same: 2,500 THB a pair for slabs up to 70 cm
@@ -82,11 +90,17 @@ export function quote(slab, choice, depositRate) {
   };
 }
 
-// Options travel with the PayPal order as custom_id (max 127 chars), e.g. "BSW-177|steel|lacquer".
-export const encodeChoice = (slabId, { legs, finish }) => `${slabId}|${legs}|${finish}`;
+// Options and the customer's phone / LINE ID travel with the PayPal order as
+// custom_id (max 127 chars, not shown to the buyer), e.g. "BSW-177|steel|lacquer|081 234 5678".
+export const cleanContact = (v) =>
+  String(v || '')
+    .replace(/[|\r\n]/g, ' ')
+    .trim()
+    .slice(0, 60);
+export const encodeChoice = (slabId, { legs, finish, contact }) => `${slabId}|${legs}|${finish}|${cleanContact(contact)}`;
 export function decodeChoice(customId) {
-  const [slabId, legs, finish] = String(customId || '').split('|');
-  return { slabId, ...normalizeChoice({ legs, finish }) };
+  const [slabId, legs, finish, contact = ''] = String(customId || '').split('|');
+  return { slabId, contact, ...normalizeChoice({ legs, finish }) };
 }
 
 export const optionsForClient = () => ({

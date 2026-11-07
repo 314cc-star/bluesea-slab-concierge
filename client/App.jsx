@@ -26,6 +26,13 @@ const PROMISES = [
   ['Lifetime repair', 'Free repairs for the life of your table.'],
 ];
 
+// From blueseawood.co customer reviews.
+const REVIEWS = [
+  ['I love it so much, it’s the most beautiful I’ve ever seen. It has a pearl-like shine and is a very heavy wood slab.', 'Nutnicha P.'],
+  ['This is the third time I’ve ordered wood slabs from this store. The product quality is consistently good.', 'Santaphop N.'],
+  ['They found wood in the exact size I needed. Got a larger piece than I ordered, but the store didn’t charge extra.', 'Verified customer'],
+];
+
 // Finished tables from our workshop, shown next to the raw slab photos.
 const FINISHED = [
   { src: '/brand/table.jpg', caption: 'Finished live-edge Suar dining table on steel legs' },
@@ -162,11 +169,15 @@ function TableOptions({ slab, options, choice, setChoice, money }) {
           {options.legs.map((l) => (
             <label key={l.id} className={`opt${choice.legs === l.id ? ' on' : ''}`}>
               <input type="radio" name="legs" value={l.id} checked={choice.legs === l.id} onChange={() => setChoice({ ...choice, legs: l.id })} />
+              {l.image ? <img src={l.image} alt="" /> : <span className="opt-none" aria-hidden="true">Top only</span>}
               <span>{l.label}</span>
-              <small>{l.id === 'none' ? 'Top only' : `+ ${money(slab.leg_price_thb)}`}</small>
+              <small>{l.id === 'none' ? 'Use your own base' : `+ ${money(slab.leg_price_thb)}`}</small>
             </label>
           ))}
         </div>
+        {options.legs.find((l) => l.id === choice.legs)?.note && (
+          <p className="fine-print">{options.legs.find((l) => l.id === choice.legs).note}</p>
+        )}
       </fieldset>
       <fieldset>
         <legend>Finish <small>(included)</small></legend>
@@ -190,9 +201,11 @@ function ReserveDialog({ slab, config, money, previewFirst, initialChoice, onClo
   const [done, setDone] = useState(null);
   const [previewOpen, setPreviewOpen] = useState(Boolean(previewFirst));
   const [choice, setChoice] = useState({ legs: 'none', finish: 'lacquer', ...initialChoice });
-  // PayPal keeps its first createOrder callback, so read the latest choice from a ref.
+  const [contact, setContact] = useState('');
+  // PayPal keeps its first callbacks, so read the latest values from a ref.
   const choiceRef = useRef(choice);
-  choiceRef.current = choice;
+  choiceRef.current = { ...choice, contact };
+  const contactOk = contact.trim().length >= 4;
   const legsPrice = choice.legs === 'none' ? 0 : slab.leg_price_thb;
   const total = slab.price_thb + legsPrice;
   const deposit = Math.round(total * config.depositRate);
@@ -242,10 +255,29 @@ function ReserveDialog({ slab, config, money, previewFirst, initialChoice, onClo
               <li>Full refund if you change your mind within {config.cancelDays} days</li>
               <li>Cracks stabilised with wooden bow ties · lifetime free repair</li>
             </ul>
+            <label className="contact-field">
+              Phone or LINE ID <small>(to arrange delivery; you choose the delivery address in PayPal)</small>
+              <input
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
+                placeholder="e.g. 081 234 5678 or @yourline"
+                autoComplete="tel"
+                maxLength={60}
+                aria-invalid={Boolean(error) && !contactOk}
+              />
+            </label>
             {error && <p className="error">{error}</p>}
             {config.paypal ? (
               <PayPalButtons
                 style={{ layout: 'vertical', shape: 'rect', color: 'gold' }}
+                onClick={(_data, actions) => {
+                  if (choiceRef.current.contact.trim().length >= 4) {
+                    setError('');
+                    return actions.resolve();
+                  }
+                  setError('Please add a phone number or LINE ID first, so we can arrange delivery.');
+                  return actions.reject();
+                }}
                 createOrder={async () => {
                   setError('');
                   const res = await fetch('/api/orders', {
@@ -434,6 +466,19 @@ export default function App() {
               </li>
             ))}
           </ol>
+        </section>
+
+        <section className="section" aria-labelledby="reviews-title">
+          <h2 className="section-title" id="reviews-title">What customers say</h2>
+          <ul className="reviews">
+            {REVIEWS.map(([quote, who]) => (
+              <li key={who}>
+                <span className="stars" aria-label="5 stars">★★★★★</span>
+                <blockquote>“{quote}”</blockquote>
+                <cite>{who}</cite>
+              </li>
+            ))}
+          </ul>
         </section>
       </main>
 

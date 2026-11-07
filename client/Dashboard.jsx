@@ -151,6 +151,8 @@ export default function Dashboard() {
       { field: 'total', headerName: 'Order total', valueFormatter: (p) => thb(p.value), type: 'rightAligned' },
       { field: 'buyerName', headerName: 'Customer', minWidth: 140 },
       { field: 'payerEmail', headerName: 'Email', minWidth: 200 },
+      { field: 'contact', headerName: 'Phone / LINE', minWidth: 150 },
+      { headerName: 'Ship to', minWidth: 260, valueGetter: (p) => (p.data.shipTo ? p.data.shipTo.name + ', ' + p.data.shipTo.address : ''), tooltipValueGetter: (p) => p.value },
       { field: 'deposit', headerName: 'Deposit paid', valueFormatter: (p) => thb(p.value), type: 'rightAligned' },
       { field: 'balance', headerName: 'Balance due', valueFormatter: (p) => thb(p.value), type: 'rightAligned' },
       { field: 'status', valueFormatter: (p) => STATUS_LABEL[p.value] || p.value, minWidth: 200 },

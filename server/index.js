@@ -14,7 +14,8 @@ import { visualize, checkLimit } from './visualize.js';
 import { mountMcp } from './mcp.js';
 import { injectSeo, buildLlmsTxt } from './seo.js';
 import {
-  LEGS, FINISHES, quote, legPrice, encodeChoice, decodeChoice, optionsForClient, POLICY_LINES, CANCEL_DAYS, CONTACT,
+  LEGS, FINISHES, quote, legPrice, encodeChoice, decodeChoice, cleanContact, optionsForClient, POLICY_LINES, CANCEL_DAYS,
+  CONTACT,
 } from './options.js';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -100,13 +101,16 @@ app.post('/api/orders', async (req, res) => {
   const slab = await getSlab(req.body?.slabId);
   if (!slab) return res.status(404).json({ error: 'Slab not found.' });
   if (slab.status !== 'available') return res.status(409).json({ error: 'Sorry, this slab was just reserved.' });
+  if (cleanContact(req.body?.contact).length < 4) {
+    return res.status(400).json({ error: 'Please add a phone number or LINE ID so we can arrange delivery.' });
+  }
   try {
     const q = quote(slab, req.body, DEPOSIT_RATE);
     const order = await createDepositOrder({
       slab,
       amount: q.deposit,
       currency: CURRENCY,
-      customId: encodeChoice(slab.id, q),
+      customId: encodeChoice(slab.id, { ...q, contact: req.body?.contact }),
       summary: q.summary,
     });
     res.json({ id: order.id });
@@ -115,6 +119,18 @@ app.post('/api/orders', async (req, res) => {
     res.status(502).json({ error: 'Could not start the PayPal payment.' });
   }
 });
+
+// PayPal's shipping block as one readable line for the owner and the customer.
+function formatShipping(shipping) {
+  const a = shipping?.address;
+  if (!a) return null;
+  return {
+    name: shipping.name?.full_name || '',
+    address: [a.address_line_1, a.address_line_2, a.admin_area_2, a.admin_area_1, a.postal_code, a.country_code]
+      .filter(Boolean)
+      .join(', '),
+  };
+}
 
 // Capture an approved deposit, reserve the slab and save the order.
 // Safe to call twice for the same order (page reloads, double clicks).
@@ -154,6 +170,8 @@ function completeDeposit(orderId) {
           balance: q.total - deposit,
           buyerName: [result.payer?.name?.given_name, result.payer?.name?.surname].filter(Boolean).join(' '),
           payerEmail: result.payer?.email_address || null,
+          contact: choice.contact || null, // phone or LINE ID from our checkout
+          shipTo: formatShipping(unit.shipping), // delivery address chosen in PayPal
           createdAt: new Date().toISOString(),
           status: 'deposit_paid',
         });

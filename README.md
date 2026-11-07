@@ -125,4 +125,6 @@ client/ListingWriter.jsx Photo-to-listing panel
 
 ## License
 
-Code: MIT (see `LICENSE`). The Blue Sea Wood name, logo and photos belong to Blue Sea Wood.
+The code is MIT licensed (see `LICENSE`).
+
+The Blue Sea Wood name and logo, and the photos in `client/public/brand` and `data/photos`, are trademarks and images of Blue Sea Wood. They are not covered by the MIT license.

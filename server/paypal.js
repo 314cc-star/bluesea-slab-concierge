@@ -59,7 +59,8 @@ export function createDepositOrder({ slab, amount, currency, returnUrl, cancelUr
           experience_context: {
             brand_name: 'Blue Sea Wood',
             user_action: 'PAY_NOW',
-            shipping_preference: 'NO_SHIPPING',
+            // Buyer picks the delivery address in PayPal; we save it on capture.
+            shipping_preference: 'GET_FROM_FILE',
             return_url: returnUrl,
             cancel_url: cancelUrl,
           },
