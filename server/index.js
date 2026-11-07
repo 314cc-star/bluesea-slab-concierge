@@ -1,3 +1,4 @@
+import './secrets.js'; // must stay first: fills process.env from Render secret files
 import express from 'express';
 import path from 'node:path';
 import { existsSync, readFileSync } from 'node:fs';
