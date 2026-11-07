@@ -1,0 +1,188 @@
+[
+  {
+    "id": "BSW-177",
+    "species": "Suar (Monkey Pod)",
+    "length_cm": 230,
+    "width_cm": 109,
+    "widths_cm": [
+      106,
+      109,
+      86
+    ],
+    "thickness_cm": 6,
+    "edge": "live edge",
+    "tone": "warm orange-brown heartwood",
+    "figure": "wavy flowing grain with a small knot cluster, dramatic peaked live edge on one side",
+    "best_for": [
+      "dining table 8 seats",
+      "large family table"
+    ],
+    "price_thb": 24000,
+    "status": "available",
+    "photo": "/photos/BSW-177.jpg",
+    "price_source": "blueseawood.co 2026 list (7.5 cm) minus 25%, rounded to 1,000"
+  },
+  {
+    "id": "BSW-176",
+    "species": "Suar (Monkey Pod)",
+    "length_cm": 240,
+    "width_cm": 109,
+    "widths_cm": [
+      95,
+      109,
+      88
+    ],
+    "thickness_cm": 6,
+    "edge": "live edge",
+    "tone": "rich brown with dark chocolate streaks",
+    "figure": "swirling grain with curly figure, gentle wavy live edges",
+    "best_for": [
+      "dining table 8 seats",
+      "conference table"
+    ],
+    "price_thb": 25000,
+    "status": "available",
+    "photo": "/photos/BSW-176.jpg",
+    "price_source": "blueseawood.co 2026 list (7.5 cm) minus 25%, rounded to 1,000"
+  },
+  {
+    "id": "BSW-175",
+    "species": "Suar (Monkey Pod)",
+    "length_cm": 230,
+    "width_cm": 112,
+    "widths_cm": [
+      100,
+      112,
+      91
+    ],
+    "thickness_cm": 6,
+    "edge": "live edge",
+    "tone": "golden brown with darker swirls",
+    "figure": "strong swirl figure across the slab, a few small natural checks near one end",
+    "best_for": [
+      "dining table 8 seats",
+      "wide family table"
+    ],
+    "price_thb": 24000,
+    "status": "available",
+    "photo": "/photos/BSW-175.jpg",
+    "price_source": "blueseawood.co 2026 list (7.5 cm) minus 25%, rounded to 1,000"
+  },
+  {
+    "id": "BSW-174",
+    "species": "Suar (Monkey Pod)",
+    "length_cm": 230,
+    "width_cm": 112,
+    "widths_cm": [
+      104,
+      112,
+      98
+    ],
+    "thickness_cm": 6,
+    "edge": "live edge",
+    "tone": "light golden heartwood with a bold dark streak band",
+    "figure": "flame-like flowing grain, high contrast",
+    "best_for": [
+      "dining table 8 seats",
+      "statement table"
+    ],
+    "price_thb": 24000,
+    "status": "available",
+    "photo": "/photos/BSW-174.jpg",
+    "price_source": "blueseawood.co 2026 list (7.5 cm) minus 25%, rounded to 1,000"
+  },
+  {
+    "id": "BSW-132",
+    "species": "Suar (Monkey Pod)",
+    "length_cm": 250,
+    "width_cm": 114,
+    "widths_cm": [
+      105,
+      114,
+      98
+    ],
+    "thickness_cm": 6.2,
+    "edge": "live edge",
+    "tone": "deep walnut brown with smoky dark streaks",
+    "figure": "curly figure with darker heartwood patterns",
+    "best_for": [
+      "dining table 8-10 seats",
+      "conference table"
+    ],
+    "price_thb": 26000,
+    "status": "available",
+    "photo": "/photos/BSW-132.jpg",
+    "price_source": "blueseawood.co 2026 list (7.5 cm) minus 25%, rounded to 1,000"
+  },
+  {
+    "id": "BSW-4",
+    "species": "Suar (Monkey Pod)",
+    "length_cm": 330,
+    "width_cm": 90,
+    "widths_cm": [
+      94,
+      90,
+      120
+    ],
+    "thickness_cm": 6,
+    "edge": "live edge",
+    "tone": "soft brown with long dark grain lines",
+    "figure": "long straight flowing grain, one end flares out to 120 cm, a natural crack at the wide end, stabilised with wooden bow ties",
+    "best_for": [
+      "long dining table 10-12 seats",
+      "conference table"
+    ],
+    "price_thb": 29000,
+    "status": "available",
+    "photo": "/photos/BSW-4.jpg",
+    "price_source": "blueseawood.co 2026 list (7.5 cm) minus 25%, rounded to 1,000"
+  },
+  {
+    "id": "BSW-3",
+    "species": "Suar (Monkey Pod)",
+    "length_cm": 420,
+    "width_cm": 90,
+    "widths_cm": [
+      90,
+      90,
+      105
+    ],
+    "thickness_cm": 8.5,
+    "edge": "live edge",
+    "tone": "honey golden",
+    "figure": "striking curly ripple figure along the whole length, a natural crack at the narrow end, stabilised with wooden bow ties",
+    "best_for": [
+      "boardroom table",
+      "restaurant or bar counter",
+      "long dining table 12-14 seats"
+    ],
+    "price_thb": 32000,
+    "status": "available",
+    "photo": "/photos/BSW-3.jpg",
+    "price_source": "blueseawood.co 2026 list (7.5 cm) minus 25%, rounded to 1,000"
+  },
+  {
+    "id": "BSW-1",
+    "species": "Suar (Monkey Pod)",
+    "length_cm": 470,
+    "width_cm": 80,
+    "widths_cm": [
+      90,
+      80,
+      120
+    ],
+    "thickness_cm": 8.5,
+    "edge": "live edge",
+    "tone": "light golden with dark knots",
+    "figure": "extra long slab with characterful knots, flared 120 cm base with a natural split at the base, stabilised with wooden bow ties",
+    "best_for": [
+      "bar counter",
+      "restaurant communal table",
+      "boardroom table"
+    ],
+    "price_thb": 32000,
+    "status": "available",
+    "photo": "/photos/BSW-1.jpg",
+    "price_source": "blueseawood.co 2026 list (7.5 cm) minus 25%, rounded to 1,000"
+  }
+]
