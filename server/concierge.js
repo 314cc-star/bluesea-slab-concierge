@@ -31,7 +31,7 @@ Customers tell you about their room and what they want to build; you find the ri
 How Blue Sea Wood works:
 - Every slab is one solid piece (no joined boards), kiln-dried, cut, sanded and finished, ready as a tabletop. Legs are sold separately (wooden or steel).
 - Edge styles: live edge (both natural edges), single straight edge (one straight side for walls), straight edge (rectangular), round.
-- Custom cutting to size is possible; reference prices: 60x150x5 cm 5,700 THB, 80x200x5 cm 13,200 THB, 90x250x7.5 cm 32,000 THB, 100x300x7.5 cm 40,000 THB, round 80 cm 6,000 THB.
+- Custom cutting to size is possible. The price shown for a specific slab is its listed price; ask the shop to confirm any custom-cut price.
 - Ordering: the customer picks a real slab, pays a ${Math.round(depositRate * 100)}% deposit to reserve it, and pays the balance before shipping. Production starts 3 days after the deposit (the free-cancellation window) and takes about 14 days.
 ${policyGuide()}
   If a slab has a natural crack, reassure the customer: we fit wooden bow ties and the table has a lifetime free repair warranty.
@@ -46,7 +46,7 @@ Sizing guide: allow about 60 cm of table length per seated person; dining tables
 Rules:
 - Always call search_slabs before recommending; only recommend slabs it returns, by their ID. Never invent stock, prices or IDs.
 - Recommend at most 3 slabs and say briefly why each fits (size, edge, tone).
-- If nothing fits, say so and offer a custom cut using the reference prices.
+- If nothing fits exactly, search for larger available slabs that could be cut down and recommend specific results by ID and listed price. Do not quote a custom-cut price; ask the shop to confirm it.
 - When the customer clearly wants a specific slab, call start_checkout with its ID. You cannot take payment yourself; the customer confirms in PayPal.
 - Language: always reply in English.
 - Keep replies short and warm, like a helpful shop owner.`;
@@ -173,7 +173,7 @@ async function askModel(model, body, timeoutMs) {
 export async function converse({ history, message, depositRate }) {
   // Small models drift into Thai because the shop is Thai; pin English on every turn.
   const contents = [...history, { role: 'user', parts: [{ text: message }, { text: '(Reply in English.)' }] }];
-  const suggested = new Set();
+  const searched = new Map();
   let checkout = null;
 
   for (let round = 0; round < MAX_TOOL_ROUNDS; round++) {
@@ -183,7 +183,10 @@ export async function converse({ history, message, depositRate }) {
     const calls = reply.parts.filter((p) => p.functionCall);
     if (calls.length === 0) {
       const text = reply.parts.map((p) => p.text || '').join('').trim();
-      return { reply: text, history: contents, suggestedSlabIds: [...suggested], checkout };
+      const suggestedSlabIds = [...searched.keys()].filter((id) =>
+        new RegExp(`(?<![\\w-])${id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\w-])`, 'i').test(text),
+      ).slice(0, 3);
+      return { reply: text, history: contents, suggestedSlabIds, checkout };
     }
 
     const responses = [];
@@ -192,7 +195,7 @@ export async function converse({ history, message, depositRate }) {
       let result;
       if (functionCall.name === 'search_slabs') {
         const found = await searchSlabs(args);
-        found.slice(0, 3).forEach((s) => suggested.add(s.id));
+        found.forEach((s) => searched.set(s.id, s));
         result = { slabs: found };
       } else if (functionCall.name === 'start_checkout') {
         const slab = await getSlab(args.slab_id);
@@ -222,7 +225,7 @@ export async function converse({ history, message, depositRate }) {
   return {
     reply: 'Sorry, I got a bit lost. Could you tell me the size you need again?',
     history: contents,
-    suggestedSlabIds: [...suggested],
+    suggestedSlabIds: [],
     checkout,
   };
 }

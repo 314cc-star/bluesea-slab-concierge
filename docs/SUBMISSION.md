@@ -20,6 +20,8 @@ We wanted one simple, fair rule: **whoever pays the deposit first gets the slab.
 one slab for that one customer for 3 days, the website marks it Reserved so nobody else can pay for it, and if they
 change their mind within 3 days the deposit is refunded and the slab goes back on sale.
 
+In this sandbox demo, test reservations are released automatically after 30 minutes so judges can try the same slabs. The 3-day period describes the intended customer refund policy.
+
 ## What it does
 - **Finds the real piece.** Customers describe their room. A Gemini agent calls `search_slabs` on live stock (real slabs, real photos, real measurements) and explains which slab fits and why. It never invents stock or prices.
 - **Made to order.** Customers choose steel, wooden or no legs and one of five finishes, and see the total at once. The agent can suggest options, for example a durable polyurethane finish for a family with kids.

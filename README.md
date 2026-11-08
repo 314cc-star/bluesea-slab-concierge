@@ -96,8 +96,8 @@ People already ask AI assistants things like *"where can I buy a 2.5 m live-edge
 
 ## Try it (judges)
 
-1. Open the live demo and ask the concierge, for example: *"A dining table for 6 people, my room is 3 m wide"*, then *"I'll take BSW-2403"*.
-2. Click **Pay deposit with PayPal** and pay with a **PayPal sandbox personal account** (developer.paypal.com > Testing Tools > Sandbox Accounts). No real money moves.
+1. Open the live demo and ask the concierge, for example: *"A dining table for 6 people, my room is 3 m wide"*, then choose an available slab, such as *"I'll take BSW-177"*.
+2. Click **Pay deposit with PayPal** and pay with a **PayPal sandbox personal account** (developer.paypal.com > Testing Tools > Sandbox Accounts). No real money moves. Demo reservations are released after 30 minutes; the intended customer refund window is 3 days.
 3. Open **/owner** (owner key: _given in the Devpost submission_). The order shows in the Orders grid. Click **Send balance invoice**.
 4. In **Add a slab with AI**, upload any wood slab photo, enter a size and price, and click **Write listing with AI**.
 
